@@ -1,0 +1,14 @@
+.searchDiv{
+    padding-top: 30px;
+    width: 800px;
+    margin: 0 auto;
+}
+
+#container {
+    margin-left: 200px;
+    margin-top: 20px;
+}
+
+#searchInput{
+    margin-right: 5px;
+}

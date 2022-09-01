@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="26f5fb4e-6062-4242-a69b-a4cc62549644" name="gifni" url="http://192.168.1.12">
+        <fileTransfer rootFolder="/var/www/html/gifni" accessType="SFTP" host="192.168.1.12" port="22" sshConfigId="17b22220-6fa4-4ae6-ba85-137908a8b619" sshConfig="root@192.168.1.12:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

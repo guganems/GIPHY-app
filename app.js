@@ -1,38 +1,57 @@
-// async function init(){
-//     let response = await request('https://api.giphy.com/v1/gifs/search?api_key=oBVyjgWmQoAWxj8I6sDcc01uiY802ps3&q=car&limit=25&offset=0&rating=G&lang=en');
-
-//     console.log(response.data[0].embed_url);
-//     document.getElementById('example').src = response.data[0].embed_url;
-// }
-
-document.getElementById('submitBtn').addEventListener('click', async function(e){
+let OLD_SEARCH_STR = "";
+let COUNT = 6;
+let STEP = 3;
+let INITIALIZED = false;
+init();
+document.getElementById('submitBtn').addEventListener('click', function(e){
     e.preventDefault();
-    searchString = document.getElementById('searchInput').value;
-    let response =  await fetch(`https://api.giphy.com/v1/gifs/search?api_key=aHSpMcQvtdCnBuVunE8ZkkUmwUIwMID9&q=${searchString}&limit=6&offset=0&rating=G&lang=en`).then(response => response.json());
-
-    var parentOfCard = document.getElementById('container');
-    parentOfCard.innerHTML = "";
-    for (let image of response.data){
-        // console.log(parentOfCard);
-        parentOfCard.innerHTML += `
-        <div class="card col-md-3" style="width: 18rem; margin: 5px">
-        <iframe src="${image.embed_url}" frameBorder="0"></iframe>
-        <div class="card-body">
-            <button class='btn btn-outline-danger' onclick="deleteMe(this)">Delete Me <br /> <i><small>but what's the purpose of this?</small></i></button>
-        </div>
-      </div>
-        `;
-    }
-
-    console.log(response.data);
-    // document.getElementById('example').src = response.data[0].embed_url;
+    search(0)
+});
+document.getElementById('show_more').addEventListener('click', e => {
+    e.preventDefault();
+    search(COUNT - STEP);
+})
+document.getElementById('searchInput').addEventListener('keyup', function () {
+    if (this.value !== OLD_SEARCH_STR) hideShowMore();
 })
 
+function init() {
+    let showMore = document.getElementById('show_more_parent');
+    if (!INITIALIZED) showMore.style.display = 'none';
+}
 function deleteMe(me){
     console.log(me);
-    realMe = me.parentNode.parentNode;
-    mom = realMe.parentNode;
+    let realMe = me.parentNode.parentNode;
+    let mom = realMe.parentNode;
     mom.removeChild(realMe);
 }
-
-// init();
+function hideShowMore() {
+    document.getElementById('show_more_parent').style.display = "none";
+}
+function search(offset) {
+    let searchString = document.getElementById('searchInput').value;
+    if (!searchString) return;
+    fetch(`https://api.giphy.com/v1/gifs/search?api_key=aHSpMcQvtdCnBuVunE8ZkkUmwUIwMID9&q=${searchString}&limit=${STEP}&offset=${offset}&rating=G&lang=en`).then(response => response.json()).then(response => {
+        let parentOfCard = document.getElementById('container');
+        console.log(searchString, OLD_SEARCH_STR);
+        if (searchString !== OLD_SEARCH_STR) {
+            parentOfCard.innerHTML = "";
+        }
+        for (let image of response.data){
+            parentOfCard.innerHTML += `
+                <div class="card col-md-3" style="width: 18rem; margin: 5px">
+                    <iframe class="img-container" src="${image.embed_url}"></iframe>
+                    <div class="card-body">
+                        <button class='btn btn-outline-danger' onclick="deleteMe(this)">Delete Me <br /> <i><small>but what's the purpose of this?</small></i></button>
+                    </div>
+                </div>
+        `;
+        }
+        COUNT += STEP;
+        document.getElementById('show_more_parent').style.display = "";
+        if (offset === 0) setOldSearchString();
+    });
+}
+function setOldSearchString() {
+    OLD_SEARCH_STR = document.getElementById('searchInput').value;
+}

@@ -3,6 +3,9 @@
     width: 800px;
     margin: 0 auto;
 }
+.img-container {
+    border: 0;
+}
 
 #container {
     margin-left: 200px;
@@ -11,4 +14,8 @@
 
 #searchInput{
     margin-right: 5px;
+}
+#show_more_parent {
+    display: flex;
+    justify-content: center;
 }
